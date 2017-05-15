@@ -1,19 +1,38 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Phone Information System</title>
 
-    <link rel="stylesheet" type="text/css" href="default.css">
-  </head>
-  <body>
-    <div class="page-content">
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac laoreet sapien, ac convallis erat. Vivamus placerat pellentesque condimentum. Praesent sapien eros, pharetra vitae ullamcorper vulputate, luctus sit amet ex. Fusce gravida nec mi ut sollicitudin. Vestibulum vulputate enim elit, vel blandit purus dictum ac. Proin eget malesuada ipsum. Nulla facilisi. Nunc ligula urna, dapibus et hendrerit eget, varius sed est. Vivamus felis augue, pellentesque eu metus fermentum, vulputate dictum diam. Vestibulum accumsan ipsum dolor, sed venenatis nibh ullamcorper at. Ut eu blandit eros, vitae tincidunt lacus. Aliquam erat volutpat. Sed cursus tempus aliquet. Duis tristique diam sit amet tortor fermentum aliquam.</p>
-      <p>Donec iaculis quis metus ut vestibulum. Sed at mollis ipsum, sit amet dapibus neque. Donec nec ultricies sem, sed egestas tortor. Duis ut felis eu est fringilla ullamcorper semper at quam. In fringilla nunc vitae quam rhoncus, a aliquam nunc accumsan. Aenean at diam lobortis, egestas quam non, ultricies nisl. Phasellus nec ultrices libero. Aliquam elementum, dui non vulputate consequat, eros dolor ornare erat, non consequat diam erat eu ligula. Morbi mollis dui urna, a tincidunt risus dignissim non. Aliquam rhoncus lacinia purus, nec feugiat nisl rutrum auctor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc venenatis semper felis sed pretium. Nunc varius turpis eu purus dapibus tristique. Praesent at sem in arcu euismod gravida eget vitae dui. Quisque sit amet cursus urna.
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Phone Information System</title>
 
-</p><p>Mauris aliquam mattis purus, non ultricies neque volutpat nec. Pellentesque dictum a ligula sit amet mattis. Vivamus varius ante lectus, ut pharetra nulla pharetra quis. Vivamus molestie tincidunt nisl, at congue nunc auctor quis. Fusce mi lacus, feugiat sit amet quam at, laoreet consectetur lectus. Duis luctus volutpat gravida. Vivamus consequat tellus eget velit aliquet ullamcorper. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Duis tristique ipsum quis nulla pulvinar ultricies. Interdum et malesuada fames ac ante ipsum primis in faucibus. Proin sed tellus nisl. Aliquam dictum gravida sodales. Nulla facilisi. Etiam semper quam at gravida maximus. Pellentesque efficitur at urna quis congue.
+  <link rel="stylesheet" type="text/css" href="./css/default.css">
+</head>
 
-</p>
+<body>
+  <div class="page-content">
+    <div class="db-status">
+      <h3>Ohio Database Status: <span id="ohio-status"></span></h3>
+      <h3>Colorado Database Status: <span id="colorado-status"></span></h3>
     </div>
-  </body>
+
+    <div class="caller-information" style="display:none;">
+      <p>Name: <span id="clientName"></span></p>
+      <p>Email: <span id="email"></span></p>
+      <p>Lead Status Type: <span id="leadStatus"></span></p>
+      <p>Lead Source: <span id="leadSource"></span></p>
+      <p>Venue Name: <span id="venueName"></span></p>
+      <p>Venue Address: <span id="venueAddress"></span></p>
+      <p>Event Start Time: <span id="eventTime"></span></p>
+      <p>Event Date: <span id="eventDate"></span></p>
+      <p>Event length: <span id="eventLength"></span></p>
+      <p>Lead Notes: <span id="notes"></span></p>
+    </div>
+  </div>
+  <!-- In Electron, this is the correct way to include jQuery -->
+  <script>
+    window.$ = window.jQuery = require('./js/jquery-3.2.1.min.js');
+  </script>
+  <script src="./js/server.js"></script>
+</body>
+
 </html>
