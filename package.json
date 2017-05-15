@@ -1,0 +1,27 @@
+{
+  "name": "phone-information-system",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/ChronoAnomaly/phone-information-system.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ChronoAnomaly/phone-information-system/issues"
+  },
+  "homepage": "https://github.com/ChronoAnomaly/phone-information-system#readme",
+  "devDependencies": {},
+  "dependencies": {
+    "electron": "^1.6.7",
+    "eyes": "^0.1.8",
+    "request": "^2.81.0",
+    "xml2js": "^0.4.17"
+  }
+}
