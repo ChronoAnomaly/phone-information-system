@@ -1,7 +1,7 @@
 var http = require("http");
-var parseString = require('xml2js').parseString,
-  xml2js = require('xml2js');;
-var inspect = require('eyes').inspector({maxLength: false})
+var parseString = require('xml2js').parseString;
+var xml2js = require('xml2js');
+var inspect = require('eyes').inspector({maxLength: false});
 var builder = new xml2js.Builder();
 var request = require('request');
 
@@ -112,8 +112,12 @@ http.createServer(function(req, resp) {
     //       parseClientInfo(info);
     //     }
     //
+    //     if (!jQuery.isEmptyObject(info.event_data)) {
+    //       $(".event-information").show();
+    //       parseEventInfo(info);
+    //     }
+    //
     //   }
-    //   //console.log(info.lead_id);
     // });
 
     // Ohio DB request
@@ -128,7 +132,6 @@ http.createServer(function(req, resp) {
       var info = JSON.parse(body);
       if (jQuery.isEmptyObject(info.lead_data) && jQuery.isEmptyObject(info.client_data)) {
         $("#ohio-status").text("No client information found!").css("color", "red");
-        //$(".lead-information").hide();
       } else {
         $("#ohio-status").text("Client information found!").css("color", "green");
 
@@ -143,8 +146,12 @@ http.createServer(function(req, resp) {
           $(".client-information").show();
           parseClientInfo(info);
         }
+
+        if (!jQuery.isEmptyObject(info.event_data)) {
+          $(".event-information").show();
+          parseEventInfo(info);
+        }
       }
-      //console.log(info.lead_id);
     });
 
     // Colorado DB request
@@ -174,25 +181,14 @@ http.createServer(function(req, resp) {
           $(".client-information").show();
           parseClientInfo(info);
         }
+
+        if (!jQuery.isEmptyObject(info.event_data)) {
+          $(".event-information").show();
+          parseEventInfo(info);
+        }
       }
-      //console.log(info.lead_id);
-      // });
-
-      //request.post('http://www.customerdatabase.dev/index.php?/public/PublicData/findInformation').form({phone_number: endxml['PolycomIPPhone']['IncomingCallEvent'][0]['CallingPartyNumber']
-      //  }).on('response', function(response) {
-      //      console.log('HEY');
-      //  });
-
-      // console.log(endxml['PolycomIPPhone']['IncomingCallEvent'][0]['CallingPartyNumber'][0]);
-      // console.log();
-      // console.log(respContent['CallingPartyNumber']);
-      // console.log();
-      // console.log(respString.CallingPartyNumber);
-      // console.log();
-      // console.log(respContent['CallingPartyNumber']);
-      // console.log();
-
     });
+
     resp.writeHead(200, {"Content-Type": "text/plain"});
     resp.write("OK");
     //console.log(request);
@@ -226,4 +222,12 @@ http.createServer(function(req, resp) {
     $("#clientEmail").text(info.client_data.client_email);
     $("#clientDateOfContact").text(info.client_data.date_of_contact);
     $("#clientReferral").text(info.client_data.client_referral);
+  };
+
+  var parseEventInfo = function(info) {
+    $eventDiv = $('.event-information');
+
+    jQuery.each(info.event_data, function(index, value) {
+      console.log(index + ": " + value);
+    });
   };
