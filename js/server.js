@@ -97,7 +97,8 @@ http.createServer(function(req, resp) {
         //$(".caller-information").hide();
       } else {
         $("#ohio-status").text("Client information found!").css("color", "green");
-        //$(".caller-information").show();
+        $(".no-info").hide();
+        $(".caller-information").show();
         parseInfo(info);
       }
       //console.log(info[0].lead_id);
@@ -113,9 +114,10 @@ http.createServer(function(req, resp) {
       var info = JSON.parse(body);
       if (jQuery.isEmptyObject(info)) {
         $("#colorado-status").text("No client information found!").css("color", "red");
-        $(".caller-information").hide();
+        // $(".caller-information").hide();
       } else {
         $("#colorado-status").text("Client information found!").css("color", "green");
+        $(".no-info").hide();
         $(".caller-information").show();
         parseInfo(info);
       }
@@ -153,9 +155,9 @@ var parseInfo = function(info) {
   $("leadStatus").text(info[0].lead_status);
   $("#leadSource").text(info[0].lead_source);
   $("#venueName").text(info[0].venue_name);
-  $("#venueAddress").text(info[0].venue_street_address + " " + info[0].venue_city + ", " + info[0].venue_state + " " + info[0].venue_zip);
-  $("#eventTime").text(event_datetime[1]);
-  $("#eventDate").text(event_datetime[0]);
+  $("#venueAddress").text(info[0].venue_address );
+  $("#eventTime").text(info[0].event_time);
+  $("#eventDate").text(info[0].event_date);
   $("#eventLength").text(info[0].event_length);
   $("#notes").text(info[0].lead_notes);
 };
