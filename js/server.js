@@ -84,6 +84,8 @@ http.createServer(function(req, resp) {
     // console.log(inspect(endxml))
     // console.log(inspect(builder.buildObject(respString)));
 
+    // Testing dev DB request
+    //===================================================================================
     // request.post({
     //   url: 'http://www.customerdatabase.dev/index.php?/public/PublicData/findInformation',
     //   form: {
@@ -92,37 +94,61 @@ http.createServer(function(req, resp) {
     // }, function(err, httpResponse, body) {
     //   console.log(body);
     //   var info = JSON.parse(body);
-    //   if (jQuery.isEmptyObject(info)) {
+    //   if (jQuery.isEmptyObject(info.lead_data) && jQuery.isEmptyObject(info.client_data)) {
     //     $("#ohio-status").text("No client information found!").css("color", "red");
     //     //$(".lead-information").hide();
     //   } else {
     //     $("#ohio-status").text("Client information found!").css("color", "green");
-    //     $(".lead-information").show();
-    //     parseInfo(info);
+    //
+    //     if (!jQuery.isEmptyObject(info.lead_data)) {
+    //       $(".lead-information").show();
+    //       parseLeadInfo(info);
+    //     } else {
+    //       console.log(info.lead_data === undefined);
+    //     }
+    //
+    //     if (!jQuery.isEmptyObject(info.client_data)) {
+    //       $(".client-information").show();
+    //       parseClientInfo(info);
+    //     }
+    //
     //   }
     //   //console.log(info.lead_id);
     // });
 
+    // Ohio DB request
+    //===================================================================================
     request.post({
-      url: 'http://www.customerdatabase.dev/index.php?/public/PublicData/findInformation',
+      url: 'https://www.pictureperfectohio.com/customerdatabase//index.php?/public/PublicData/findInformation',
       form: {
         phone_number: endxml['PolycomIPPhone']['IncomingCallEvent'][0]['CallingPartyNumber'][0]
       }
     }, function(err, httpResponse, body) {
       console.log(body);
       var info = JSON.parse(body);
-      if (jQuery.isEmptyObject(info)) {
+      if (jQuery.isEmptyObject(info.lead_data) && jQuery.isEmptyObject(info.client_data)) {
         $("#ohio-status").text("No client information found!").css("color", "red");
         //$(".lead-information").hide();
       } else {
         $("#ohio-status").text("Client information found!").css("color", "green");
-        $(".no-info").hide();
-        $(".lead-information").show();
-        parseInfo(info);
+
+        if (!jQuery.isEmptyObject(info.lead_data)) {
+          $(".lead-information").show();
+          parseLeadInfo(info);
+        } else {
+          console.log(info.lead_data === undefined);
+        }
+
+        if (!jQuery.isEmptyObject(info.client_data)) {
+          $(".client-information").show();
+          parseClientInfo(info);
+        }
       }
       //console.log(info.lead_id);
     });
 
+    // Colorado DB request
+    //===================================================================================
     request.post({
       url: 'https://www.denverphotoboothrentals.com/customerdatabase/index.php?/public/PublicData/findInformation',
       form: {
@@ -131,53 +157,73 @@ http.createServer(function(req, resp) {
     }, function(err, httpResponse, body) {
       console.log(body);
       var info = JSON.parse(body);
-      if (jQuery.isEmptyObject(info)) {
+      if (jQuery.isEmptyObject(info.lead_data) && jQuery.isEmptyObject(info.client_data)) {
         $("#colorado-status").text("No client information found!").css("color", "red");
         // $(".lead-information").hide();
       } else {
         $("#colorado-status").text("Client information found!").css("color", "green");
-        $(".no-info").hide();
-        $(".lead-information").show();
-        parseInfo(info);
+
+        if (!jQuery.isEmptyObject(info.lead_data)) {
+          $(".lead-information").show();
+          parseLeadInfo(info);
+        } else {
+          console.log(info.lead_data === undefined);
+        }
+
+        if (!jQuery.isEmptyObject(info.client_data)) {
+          $(".client-information").show();
+          parseClientInfo(info);
+        }
       }
       //console.log(info.lead_id);
+      // });
+
+      //request.post('http://www.customerdatabase.dev/index.php?/public/PublicData/findInformation').form({phone_number: endxml['PolycomIPPhone']['IncomingCallEvent'][0]['CallingPartyNumber']
+      //  }).on('response', function(response) {
+      //      console.log('HEY');
+      //  });
+
+      // console.log(endxml['PolycomIPPhone']['IncomingCallEvent'][0]['CallingPartyNumber'][0]);
+      // console.log();
+      // console.log(respContent['CallingPartyNumber']);
+      // console.log();
+      // console.log(respString.CallingPartyNumber);
+      // console.log();
+      // console.log(respContent['CallingPartyNumber']);
+      // console.log();
+
     });
+    resp.writeHead(200, {"Content-Type": "text/plain"});
+    resp.write("OK");
+    //console.log(request);
 
-    //request.post('http://www.customerdatabase.dev/index.php?/public/PublicData/findInformation').form({phone_number: endxml['PolycomIPPhone']['IncomingCallEvent'][0]['CallingPartyNumber']
-    //  }).on('response', function(response) {
-    //      console.log('HEY');
-    //  });
+    resp.end();
+  }).listen(8080);
 
-    // console.log(endxml['PolycomIPPhone']['IncomingCallEvent'][0]['CallingPartyNumber'][0]);
-    // console.log();
-    // console.log(respContent['CallingPartyNumber']);
-    // console.log();
-    // console.log(respString.CallingPartyNumber);
-    // console.log();
-    // console.log(respContent['CallingPartyNumber']);
-    // console.log();
+  var parseLeadInfo = function(info) {
+    //var info = JSON.parse(body);
+    // console.log('oeprghrseuioghuiovg');
+    // console.log(info.lead_status);
+    // var event_datetime = info.event_datetime.split(" ");
+    $("#leadName").text(info.lead_data.lead_first_name + " " + info.lead_data.lead_last_name);
+    $("#leadEmail").text(info.lead_data.lead_email);
+    $("#leadStatus").text(info.lead_data.lead_status);
+    $("#leadSource").text(info.lead_data.lead_source);
+    $("#leadVenueName").text(info.lead_data.venue_name);
+    $("#leadVenueAddress").text(info.lead_data.venue_address);
+    $("#leadEventTime").text(info.lead_data.event_time);
+    $("#leadEventDate").text(info.lead_data.event_date);
+    $("#leadEventLength").text(info.lead_data.event_length);
+    $("#leadNotes").text(info.lead_data.lead_notes);
+  };
 
-  });
-  resp.writeHead(200, {"Content-Type": "text/plain"});
-  resp.write("OK");
-  //console.log(request);
-
-  resp.end();
-}).listen(8080);
-
-var parseInfo = function(info) {
-  //var info = JSON.parse(body);
-  // console.log('oeprghrseuioghuiovg');
-  // console.log(info.lead_status);
-  // var event_datetime = info.event_datetime.split(" ");
-  $("#clientName").text(info.lead_first_name + " " + info.lead_last_name);
-  $("#email").text(info.lead_email);
-  $("#leadStatus").text(info.lead_status);
-  $("#leadSource").text(info.lead_source);
-  $("#venueName").text(info.venue_name);
-  $("#venueAddress").text(info.venue_address );
-  $("#eventTime").text(info.event_time);
-  $("#eventDate").text(info.event_date);
-  $("#eventLength").text(info.event_length);
-  $("#notes").text(info.lead_notes);
-};
+  var parseClientInfo = function(info) {
+    //var info = JSON.parse(body);
+    // console.log('oeprghrseuioghuiovg');
+    // console.log(info.lead_status);
+    // var event_datetime = info.event_datetime.split(" ");
+    $("#clientName").text(info.client_data.client_first_name + " " + info.client_data.client_last_name);
+    $("#clientEmail").text(info.client_data.client_email);
+    $("#clientDateOfContact").text(info.client_data.date_of_contact);
+    $("#clientReferral").text(info.client_data.client_referral);
+  };
