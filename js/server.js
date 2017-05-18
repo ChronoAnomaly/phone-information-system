@@ -85,7 +85,7 @@ http.createServer(function(req, resp) {
     console.log(inspect(builder.buildObject(respString)));
 
     request.post({
-      url: 'https://www.pictureperfectohio.com/customerdatabase//index.php?/public/PublicData/findInformation',
+      url: 'http://www.customerdatabase.dev/index.php?/public/PublicData/findInformation',
       form: {
         phone_number: endxml['PolycomIPPhone']['IncomingCallEvent'][0]['CallingPartyNumber'][0]
       }
@@ -104,7 +104,7 @@ http.createServer(function(req, resp) {
     });
 
     request.post({
-      url: 'https://www.denverphotoboothrentals.com/customerdatabase//index.php?/public/PublicData/findInformation',
+      url: 'https://www.denverphotoboothrentals.com/customerdatabase/index.php?/public/PublicData/findInformation',
       form: {
         phone_number: endxml['PolycomIPPhone']['IncomingCallEvent'][0]['CallingPartyNumber'][0]
       }
