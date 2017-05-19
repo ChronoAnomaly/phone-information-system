@@ -16,76 +16,16 @@ http.createServer(function(req, resp) {
   req.on('data', function(data) {
     respContent.push(data.toString()); //data is a buffer instance
     respString += data.toString();
-    // console.log("Hit data");
-    // console.log("=========================================================================");
-    // console.log("data: " + data.toString());
-    // console.log("=========================================================================");
   });
   req.on('end', function() {
-    // console.log("end function");
-    // console.log("=========================================================================");
-    // console.log(respContent);
-    // console.log();
-    // console.log(respString);
-    // console.log();
-    //
-    // //endxml = builder.buildObject(respContent);
-    //
-    // console.log("endxml");
-    // console.log("=========================================================================");
-    // console.dir(endxml);
-    // var xml = "<root>Hello xml2js!</root>"
     var value = {};
-    // parseString(xml, function(err, result) {
-    //   console.log("xml test node");
-    //   console.log("=========================================================================");
-    //   console.dir(result);
-    //   console.log();
-    // });
-    // parseString(respContent, function(err, result) {
-    //   console.log("JSON:");
-    //   console.log("=========================================================================");
-    //   console.dir(JSON.stringify(result));
-    //   console.log();
-    // });
     parseString(respContent, function(err, result) {
-      // console.log("XML:");
-      // console.log("=========================================================================");
-      // console.dir(result);
       endxml = result;
-      // console.log();
     });
-    // parseString(respString, function(err, result) {
-    //   console.log("String type:");
-    //   console.log("=========================================================================");
-    //   console.dir(result);
-    //   console.log();
-    // });
-    // parseString(respString, function(err, result) {
-    //   console.log("String type JSON:");
-    //   console.log("=========================================================================");
-    //   console.dir(JSON.stringify(result));
-    //   //value = JSON.parse(result);
-    //   console.log();
-    // });
-    // console.log("respContent");
-    // console.log("=========================================================================");
-    // console.log(respContent);
-    // console.log();
-    // console.log("respString");
-    // console.log("=========================================================================");
-    // console.log(respString);
-    // console.log();
-    // console.log("Trying to access the value now");
-    // console.log("=========================================================================");
-    // console.dir(endxml);
-    // console.log();
-    // console.dir(value);
-    // console.log(inspect(endxml))
-    // console.log(inspect(builder.buildObject(respString)));
 
     // Testing dev DB request
     //===================================================================================
+
     // request.post({
     //   url: 'http://www.customerdatabase.dev/index.php?/public/PublicData/findInformation',
     //   form: {
@@ -94,7 +34,7 @@ http.createServer(function(req, resp) {
     // }, function(err, httpResponse, body) {
     //   console.log(body);
     //   var info = JSON.parse(body);
-    //   if (jQuery.isEmptyObject(info.lead_data) && jQuery.isEmptyObject(info.client_data)) {
+    //   if (jQuery.isEmptyObject(info)) {
     //     $("#ohio-status").text("No client information found!").css("color", "red");
     //     //$(".lead-information").hide();
     //   } else {
@@ -122,6 +62,7 @@ http.createServer(function(req, resp) {
 
     // Ohio DB request
     //===================================================================================
+
     request.post({
       url: 'https://www.pictureperfectohio.com/customerdatabase//index.php?/public/PublicData/findInformation',
       form: {
@@ -130,32 +71,37 @@ http.createServer(function(req, resp) {
     }, function(err, httpResponse, body) {
       console.log(body);
       var info = JSON.parse(body);
-      if (jQuery.isEmptyObject(info.lead_data) && jQuery.isEmptyObject(info.client_data)) {
+      if (jQuery.isEmptyObject(info)) {
         $("#ohio-status").text("No client information found!").css("color", "red");
       } else {
         $("#ohio-status").text("Client information found!").css("color", "green");
 
-        if (!jQuery.isEmptyObject(info.lead_data)) {
+        if (info.lead_data.length > 0) {
           $(".lead-information").show();
           parseLeadInfo(info);
         } else {
-          console.log(info.lead_data === undefined);
+          $(".lead-information").hide();
         }
 
-        if (!jQuery.isEmptyObject(info.client_data)) {
+        if (info.client_data.length > 0) {
           $(".client-information").show();
           parseClientInfo(info);
+        } else {
+          $(".client-information").hide();
         }
 
         if (!jQuery.isEmptyObject(info.event_data)) {
           $(".event-information").show();
           parseEventInfo(info);
+        } else {
+          $(".event-information").hide();
         }
       }
     });
 
     // Colorado DB request
     //===================================================================================
+
     request.post({
       url: 'https://www.denverphotoboothrentals.com/customerdatabase/index.php?/public/PublicData/findInformation',
       form: {
@@ -164,7 +110,7 @@ http.createServer(function(req, resp) {
     }, function(err, httpResponse, body) {
       console.log(body);
       var info = JSON.parse(body);
-      if (jQuery.isEmptyObject(info.lead_data) && jQuery.isEmptyObject(info.client_data)) {
+      if (jQuery.isEmptyObject(info)) {
         $("#colorado-status").text("No client information found!").css("color", "red");
         // $(".lead-information").hide();
       } else {
@@ -174,60 +120,68 @@ http.createServer(function(req, resp) {
           $(".lead-information").show();
           parseLeadInfo(info);
         } else {
-          console.log(info.lead_data === undefined);
+          $(".lead-information").hide();
         }
 
         if (!jQuery.isEmptyObject(info.client_data)) {
           $(".client-information").show();
           parseClientInfo(info);
+        } else {
+          $(".client-information").hide();
         }
 
         if (!jQuery.isEmptyObject(info.event_data)) {
           $(".event-information").show();
           parseEventInfo(info);
+        } else {
+          $(".event-information").hide();
         }
       }
     });
 
     resp.writeHead(200, {"Content-Type": "text/plain"});
     resp.write("OK");
-    //console.log(request);
-
     resp.end();
-  }).listen(8080);
+  });
+}).listen(8080);
 
-  var parseLeadInfo = function(info) {
-    //var info = JSON.parse(body);
-    // console.log('oeprghrseuioghuiovg');
-    // console.log(info.lead_status);
-    // var event_datetime = info.event_datetime.split(" ");
-    $("#leadName").text(info.lead_data.lead_first_name + " " + info.lead_data.lead_last_name);
-    $("#leadEmail").text(info.lead_data.lead_email);
-    $("#leadStatus").text(info.lead_data.lead_status);
-    $("#leadSource").text(info.lead_data.lead_source);
-    $("#leadVenueName").text(info.lead_data.venue_name);
-    $("#leadVenueAddress").text(info.lead_data.venue_address);
-    $("#leadEventTime").text(info.lead_data.event_time);
-    $("#leadEventDate").text(info.lead_data.event_date);
-    $("#leadEventLength").text(info.lead_data.event_length);
-    $("#leadNotes").text(info.lead_data.lead_notes);
-  };
+var parseLeadInfo = function(info) {
+  $("#leadName").text(info.lead_data.lead_first_name + " " + info.lead_data.lead_last_name);
+  $("#leadEmail").text(info.lead_data.lead_email);
+  $("#leadStatus").text(info.lead_data.lead_status);
+  $("#leadSource").text(info.lead_data.lead_source);
+  $("#leadVenueName").text(info.lead_data.venue_name);
+  $("#leadVenueAddress").text(info.lead_data.venue_address);
+  $("#leadEventTime").text(info.lead_data.event_time);
+  $("#leadEventDate").text(info.lead_data.event_date);
+  $("#leadEventLength").text(info.lead_data.event_length);
+  $("#leadNotes").text(info.lead_data.lead_notes);
+};
 
-  var parseClientInfo = function(info) {
-    //var info = JSON.parse(body);
-    // console.log('oeprghrseuioghuiovg');
-    // console.log(info.lead_status);
-    // var event_datetime = info.event_datetime.split(" ");
-    $("#clientName").text(info.client_data.client_first_name + " " + info.client_data.client_last_name);
-    $("#clientEmail").text(info.client_data.client_email);
-    $("#clientDateOfContact").text(info.client_data.date_of_contact);
-    $("#clientReferral").text(info.client_data.client_referral);
-  };
+var parseClientInfo = function(info) {
+  $("#clientName").text(info.client_data.client_first_name + " " + info.client_data.client_last_name);
+  $("#clientEmail").text(info.client_data.client_email);
+  $("#clientDateOfContact").text(info.client_data.date_of_contact);
+  $("#clientReferral").text(info.client_data.client_referral);
+};
 
-  var parseEventInfo = function(info) {
-    $eventDiv = $('.event-information');
+var parseEventInfo = function(info) {
+  $eventDiv = $('.event-information');
+  $eventDiv.empty();
+  $eventDiv.append("<h3>Event(s) Information</h3>");
 
-    jQuery.each(info.event_data, function(index, value) {
-      console.log(index + ": " + value);
-    });
-  };
+  jQuery.each(info.event_data, function(index, value) {
+    $eventDiv.append("<p>Event ID: " + value.event_id + "</p>");
+    $eventDiv.append("<p>Event Type: " + value.event_type + "</p>");
+    $eventDiv.append("<p>Event Date: " + value.event_date + "</p>");
+    $eventDiv.append("<p>Event Time: " + value.event_time + "</p>");
+    $eventDiv.append("<p>Event Length: " + value.event_length + "</p>");
+    $eventDiv.append("<p>Event Cost: " + value.total_cost + "</p>");
+    $eventDiv.append("<p>Event Address: " + value.event_address + "</p>");
+    $eventDiv.append("<p>Contract Signed: " + value.contract_signed + "</p>");
+    $eventDiv.append("<p>Logo Chosen: " + value.chosen_logo + "</p>");
+    $eventDiv.append("<p>Outside Event: " + value.outside_event + "</p>");
+    $eventDiv.append("<p>Event Notes: " + value.event_notes + "</p>");
+    $eventDiv.append("<br>");
+  });
+};
