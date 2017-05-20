@@ -73,6 +73,9 @@ http.createServer(function(req, resp) {
       var info = JSON.parse(body);
       if (jQuery.isEmptyObject(info.lead_data) && jQuery.isEmptyObject(info.client_data) && jQuery.isEmptyObject(info.event_data)) {
         $("#ohio-status").text("No client information found!").css("color", "red");
+        $(".lead-information").hide();
+        $(".client-information").hide();
+        $(".event-information").hide();
       } else {
         $("#ohio-status").text("Client information found!").css("color", "green");
 
@@ -112,6 +115,9 @@ http.createServer(function(req, resp) {
       var info = JSON.parse(body);
       if (jQuery.isEmptyObject(info.lead_data) && jQuery.isEmptyObject(info.client_data) && jQuery.isEmptyObject(info.event_data)) {
         $("#colorado-status").text("No client information found!").css("color", "red");
+        $(".lead-information").hide();
+        $(".client-information").hide();
+        $(".event-information").hide();
         // $(".lead-information").hide();
       } else {
         $("#colorado-status").text("Client information found!").css("color", "green");
