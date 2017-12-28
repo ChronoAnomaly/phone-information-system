@@ -34,29 +34,42 @@ http.createServer(function(req, resp) {
     // }, function(err, httpResponse, body) {
     //   console.log(body);
     //   var info = JSON.parse(body);
-    //   if (jQuery.isEmptyObject(info)) {
+    //   if (jQuery.isEmptyObject(info.lead_data) && jQuery.isEmptyObject(info.client_data) && jQuery.isEmptyObject(info.event_data)) {
     //     $("#ohio-status").text("No client information found!").css("color", "red");
-    //     //$(".lead-information").hide();
+    //
+    //     $("#ohio-status").removeClass("found-data").addClass("no-data");
+    //
+    //     if (!$("#colorado-status").hasClass("found-data")) {
+    //       $(".lead-information").hide();
+    //       $(".client-information").hide();
+    //       $(".event-information").hide();
+    //     }
+    //
     //   } else {
     //     $("#ohio-status").text("Client information found!").css("color", "green");
+    //
+    //     $("#ohio-status").removeClass("no-data").addClass("found-data");
     //
     //     if (!jQuery.isEmptyObject(info.lead_data)) {
     //       $(".lead-information").show();
     //       parseLeadInfo(info);
     //     } else {
-    //       console.log(info.lead_data === undefined);
+    //       $(".lead-information").hide();
     //     }
     //
     //     if (!jQuery.isEmptyObject(info.client_data)) {
     //       $(".client-information").show();
     //       parseClientInfo(info);
+    //     } else {
+    //       $(".client-information").hide();
     //     }
     //
     //     if (!jQuery.isEmptyObject(info.event_data)) {
     //       $(".event-information").show();
     //       parseEventInfo(info);
+    //     } else {
+    //       $(".event-information").hide();
     //     }
-    //
     //   }
     // });
 
@@ -73,11 +86,19 @@ http.createServer(function(req, resp) {
       var info = JSON.parse(body);
       if (jQuery.isEmptyObject(info.lead_data) && jQuery.isEmptyObject(info.client_data) && jQuery.isEmptyObject(info.event_data)) {
         $("#ohio-status").text("No client information found!").css("color", "red");
-        $(".lead-information").hide();
-        $(".client-information").hide();
-        $(".event-information").hide();
+
+        $("#ohio-status").removeClass("found-data").addClass("no-data");
+
+        if (!$("#colorado-status").hasClass("found-data")) {
+          $(".lead-information").hide();
+          $(".client-information").hide();
+          $(".event-information").hide();
+        }
+
       } else {
         $("#ohio-status").text("Client information found!").css("color", "green");
+
+        $("#ohio-status").removeClass("no-data").addClass("found-data");
 
         if (!jQuery.isEmptyObject(info.lead_data)) {
           $(".lead-information").show();
@@ -115,12 +136,19 @@ http.createServer(function(req, resp) {
       var info = JSON.parse(body);
       if (jQuery.isEmptyObject(info.lead_data) && jQuery.isEmptyObject(info.client_data) && jQuery.isEmptyObject(info.event_data)) {
         $("#colorado-status").text("No client information found!").css("color", "red");
-        $(".lead-information").hide();
-        $(".client-information").hide();
-        $(".event-information").hide();
-        // $(".lead-information").hide();
+
+        $("#colorado-status").removeClass("found-data").addClass("no-data");
+
+        if (!$("#ohio-status").hasClass("found-data")) {
+          $(".lead-information").hide();
+          $(".client-information").hide();
+          $(".event-information").hide();
+        }
+
       } else {
         $("#colorado-status").text("Client information found!").css("color", "green");
+
+        $("#colorado-status").removeClass("no-data").addClass("found-data");
 
         if (!jQuery.isEmptyObject(info.lead_data)) {
           $(".lead-information").show();
@@ -152,6 +180,7 @@ http.createServer(function(req, resp) {
 }).listen(8080);
 
 var parseLeadInfo = function(info) {
+  $("#leadId").text(info.lead_data.lead_id);
   $("#leadName").text(info.lead_data.lead_first_name + " " + info.lead_data.lead_last_name);
   $("#leadEmail").text(info.lead_data.lead_email);
   $("#leadStatus").text(info.lead_data.lead_status);
